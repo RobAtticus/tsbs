@@ -4,13 +4,21 @@ go:
   - 1.9.x
   - 1.10.x
   - 1.11.x
+  - 1.12.x
 
 before_install:
+  # Because the private repo has a different name, we need to rename it
+  # to 'tsbs' so we don't get build errors
+  - cd ..
+  - mv tsbs-private tsbs
+  - cd tsbs
+  # Fetch dependencies
   - go get -t -v ./...
 
 script:
   - go test -race -v ./...
   - ./.coverage_tests.sh
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+# No codecov for private repos
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
